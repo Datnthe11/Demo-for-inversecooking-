@@ -11,7 +11,7 @@ This project provides a **Streamlit-based UI** for the **Inverse Cooking** model
 ## 📂 Project Structure
 ```
 📁 inverse_cooking_demo
- ├── data # (Ingredient vocabulary(ingr_vocab.pkl), Instruction vocabulary( instr_vocab.pkl), Pre-trained model checkpoint(modelbest))
+ ├── data # (Ingredient vocabulary(ingr_vocab.pkl), Instruction vocabulary(instr_vocab.pkl), Pre-trained model checkpoint(modelbest))
  ├── demowith_streamlit.py   # Streamlit UI
  ├── model              # Recipe generation model (required functions)
  ├── utils               # Utility functions (metrics, loss functions, etc.)
@@ -30,7 +30,15 @@ This project provides a **Streamlit-based UI** for the **Inverse Cooking** model
    pip install -r requirements.txt
    ```
 
-3. **Run the Streamlit app**:
+3. **Download Pretrained Model & Vocabulary**:
+   ```bash
+   wget -P data/ https://example.com/path-to-modelbest.ckpt
+   wget -P data/ https://example.com/path-to-ingr_vocab.pkl
+   wget -P data/ https://example.com/path-to-instr_vocab.pkl
+   ```
+   *(Replace `in demowithstreamlit.py)*
+
+4. **Run the Streamlit app**:
    ```bash
    streamlit run demowith_streamlit.py
    ```
@@ -39,7 +47,4 @@ This project provides a **Streamlit-based UI** for the **Inverse Cooking** model
 1. Run the app and upload a food image.
 2. The model will predict ingredients.
 3. A recipe will be generated based on the predicted ingredients.
-
-
-
 
