@@ -15,7 +15,6 @@ The system integrates:
 * **Transformer-based Attention** for alignment between visual cues and textual tokens.
 * **Streamlit UI** for an interactive, real-time inference experience.
 
-*Note: This repository focuses on an **efficient inference pipeline** and practical implementation rather than model training.*
 
 ---
 
