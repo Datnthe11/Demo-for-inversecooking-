@@ -1,25 +1,28 @@
 import sys
 import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.join(current_dir, "src")
-
-if parent_dir not in sys.path:
-    sys.path.append(parent_dir)
-
-# Import module
+import urllib.request
 from utils.metrics import softIoU, MaskedCrossEntropyCriterion
 import streamlit as st
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
 import pickle
-from args import get_parser
-from src.model import get_model
-from src.utils.output_utils import prepare_output
+from model.args import get_parser
+from model.model import get_model
+from model.output_utils import prepare_output
 
 # Xác định thiết bị (CPU/GPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Hàm tải file từ URL
+def download_file(url, save_path):
+    st.info(f"⏳ Đang tải file từ {url}...")
+    try:
+        urllib.request.urlretrieve(url, save_path)
+        st.success(f"✅ Đã tải xong: {os.path.basename(save_path)}")
+    except Exception as e:
+        st.error(f"❌ Lỗi khi tải file: {e}")
+        raise e
 
 # Định nghĩa hàm load mô hình
 def load_model(model_path, args, ingr_vocab_size, instr_vocab_size, device):
@@ -64,10 +67,29 @@ def load_resources():
     parser = get_parser()
     args = parser.parse_args([])  # Tránh lỗi khi chạy trên Streamlit
     
-    model_path = r"\inversecooking\data\modelbest.ckpt"
-    ingr_vocab_path = r"\inversecooking\data\ingr_vocab.pkl"
-    instr_vocab_path = r"\inversecooking\data\instr_vocab.pkl"
+    # Đường dẫn file (sử dụng đường dẫn tương đối)
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        
+    model_path = os.path.join(data_dir, "modelbest.ckpt")
+    ingr_vocab_path = os.path.join(data_dir, "ingr_vocab.pkl")
+    instr_vocab_path = os.path.join(data_dir, "instr_vocab.pkl")
     
+    # URL tải file weight
+    urls = {
+        model_path: "https://dl.fbaipublicfiles.com/inversecooking/modelbest.ckpt",
+        ingr_vocab_path: "https://dl.fbaipublicfiles.com/inversecooking/ingr_vocab.pkl",
+        instr_vocab_path: "https://dl.fbaipublicfiles.com/inversecooking/instr_vocab.pkl"
+    }
+
+    # Kiểm tra và tải file nếu thiếu
+    for path, url in urls.items():
+        if not os.path.exists(path):
+            st.warning(f"File {os.path.basename(path)} không tìm thấy. Bắt đầu tải...")
+            download_file(url, path)
+    
+    # Load vocabs
     with open(ingr_vocab_path, "rb") as f:
         ingr_vocab = pickle.load(f)
 
