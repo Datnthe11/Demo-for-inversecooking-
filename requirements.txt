@@ -1,8 +1,8 @@
 numpy
 scipy
 matplotlib
-torch==0.4.1 # thay thế bằng phiên bản mới nhất
-torchvision==0.2.1 # thay thế bằng phiên bản mới nhất
+torch==0.4.1 
+torchvision==0.2.1 
 nltk
 Pillow
 tqdm
