@@ -27,9 +27,25 @@ The system follows an "Inverse Problem" solving approach:
 
 ```mermaid
 graph TD
-    A[Food Image] --> B[ResNet Encoder]
-    B --> C[Visual Embeddings]
-    C --> D[Ingredient Predictor]
-    D --> E[Predicted Ingredients]
-    C & E --> F[Recipe Transformer Decoder]
-    F --> G[Step-by-Step Instructions]
+    %% Nodes
+    A[User Image] --> B(Preprocessing: Resize/Normalize)
+    B --> C[ResNet Encoder]
+    C --> D{Visual Embedding}
+    
+    %% Stage 1
+    D --> E[Transformer Decoder: Stage 1]
+    E --> F[Ingredient Prediction]
+    F --> G[Filtered Ingredients]
+    
+    %% Stage 2
+    D & G --> H[Transformer Decoder: Stage 2]
+    H --> I[Instruction Generation]
+    
+    %% Output
+    I --> J[Text Recipe]
+    G & J --> K[[Streamlit UI: Display Results]]
+
+    %% Styling
+    style G fill:#f96,stroke:#333,stroke-width:2px
+    style J fill:#f96,stroke:#333,stroke-width:2px
+    style K fill:#2ecc71,stroke:#333,stroke-width:2px
