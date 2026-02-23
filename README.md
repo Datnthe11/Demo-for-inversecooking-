@@ -1,50 +1,34 @@
-# Demo for Inverse Cooking with Streamlit
+# 🍳📸 SnapChef — AI Recipe Reconstruction from Food Images
 
-This project provides a **Streamlit-based UI** for the **Inverse Cooking** model, which generates recipes from food images. This is a simplified version of the original Inverse Cooking model, including only the necessary components for demonstration.
+**SnapChef** is an end-to-end AI system that reconstructs cooking recipes from food images using a CNN–Transformer pipeline. Inspired by Meta AI’s *Inverse Cooking* research, this project demonstrates how Computer Vision and Natural Language Processing can be combined to generate ingredients and cooking instructions from a single dish image.
 
-##  Features
-- Upload an image of a dish 📸
-- Get predicted ingredients 🥕
-- Generate a recipe based on the image 🍲
-- Simple & interactive UI with Streamlit 🎨
+---
 
-## 📂 Project Structure
-```
-📁 inverse_cooking_demo
- ├── data # (Ingredient vocabulary(ingr_vocab.pkl), Instruction vocabulary(instr_vocab.pkl), Pre-trained model checkpoint(modelbest))
- ├── demowith_streamlit.py   # Streamlit UI
- ├── model              # Recipe generation model (required functions)
- ├── utils               # Utility functions (metrics, loss functions, etc.)
- ├── assets                # Demo images
-```
+## 🚀 Overview
 
-##  Installation & Setup
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Dathnet11/Demo-for-inversecooking.git
-   cd Demo-for-inversecooking
-   ```
+SnapChef takes a food image as input and performs cross-modal reasoning to generate:
+* **🥕 Predicted Ingredients:** Multi-label classification of what's in the dish.
+* **🍲 Cooking Instructions:** Sequential step-by-step guidance.
 
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+The system integrates:
+* **ResNet-101** for high-dimensional visual feature extraction.
+* **Transformer-based Attention** for alignment between visual cues and textual tokens.
+* **Streamlit UI** for an interactive, real-time inference experience.
 
-3. **Download Pretrained Model & Vocabulary**:
-   ```bash
-   wget -P data/ https://example.com/path-to-modelbest.ckpt
-   wget -P data/ https://example.com/path-to-ingr_vocab.pkl
-   wget -P data/ https://example.com/path-to-instr_vocab.pkl
-   ```
-   *(Replace `in demowithstreamlit.py)*
+*Note: This repository focuses on an **efficient inference pipeline** and practical implementation rather than model training.*
 
-4. **Run the Streamlit app**:
-   ```bash
-   streamlit run demowith_streamlit.py
-   ```
+---
 
-## Example Usage
-1. Run the app and upload a food image.
-2. The model will predict ingredients.
-3. A recipe will be generated based on the predicted ingredients.
+## 🧠 Architecture
 
+The system follows an "Inverse Problem" solving approach:
+
+
+
+```mermaid
+graph TD
+    A[Food Image] --> B[ResNet Encoder]
+    B --> C[Visual Features]
+    C --> D[Transformer Decoder]
+    D --> E[Ingredient Prediction]
+    D --> F[Instruction Generation]
